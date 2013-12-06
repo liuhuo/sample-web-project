@@ -1,0 +1,8 @@
+## files to ignore
+*.class
+*.zip
+*.war
+*.jar
+
+## dir to ignore
+classes/
