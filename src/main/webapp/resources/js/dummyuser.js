@@ -33,7 +33,7 @@ $(document).ready(function() {
 
 
 
-    setInterval(function () { getinfo(); },5000);
+    // setInterval(function () { getinfo(); },5000);
 
 
     $('#container').highcharts({
@@ -82,4 +82,29 @@ $(document).ready(function() {
                 data: [3.9, 4.2, 5.7, 8.5, 11.9, 15.2, 17.0, 16.6, 14.2, 10.3, 6.6, 4.8]
             }]
     });
+
+
+    $.getJSON('http://www.highcharts.com/samples/data/jsonp.php?filename=aapl-c.json&callback=?', function(data) {
+	// Create the chart
+	$('#container2').highcharts('StockChart', {
+	    rangeSelector : {
+		selected : 1
+	    },
+
+	    title : {
+		text : 'AAPL Stock Price'
+	    },
+
+	    series : [{
+		name : 'AAPL',
+		data : data,
+		tooltip: {
+		    valueDecimals: 2
+		}
+	    }]
+	});
+    });
+
+
+
 });

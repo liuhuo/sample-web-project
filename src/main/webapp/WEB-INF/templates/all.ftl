@@ -3,7 +3,8 @@
   <meta http-equiv="Content-type" content="text/html; charset=UTF-8">
   <title>dummy user list example</title>
   <script type="text/javascript" src="resources/js/jquery-2.0.3.js"></script>
-  <script type="text/javascript" src="resources/js/highcharts.js"></script>
+  <!-- <script type="text/javascript" src="resources/js/highcharts.js"></script> -->
+  <script type="text/javascript" src="resources/js/highstock.js"></script>
   <script type="text/javascript" src="resources/js/jquery.handsontable.full.js"></script>
   <link rel="stylesheet" media="screen" href="resources/css/jquery.handsontable.full.css">
 
@@ -44,6 +45,10 @@
   <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto">
   </div>
 
+  <div id="container1" style="min-width: 310px; height: 400px; margin: 0 auto">
+  </div>
+
+  <div id="container2" style="height: 500px; min-width: 500px"></div>
   <div id = "ltc"></div>
 </div>
 </body>
