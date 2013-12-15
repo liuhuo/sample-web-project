@@ -14,8 +14,13 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class DummyUserDaoImpl implements DummyUserDao {
+
     @Autowired
     DataSource dataSource;
+
+    public void setDataSource(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
 
     public void addDummyUser(DummyUser user) {
 	JdbcTemplate createUser = new JdbcTemplate(dataSource);

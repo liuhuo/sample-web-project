@@ -15,6 +15,15 @@
                         http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
 
+
+    <mvc:annotation-driven/>
+
+    <context:annotation-config />
+
+    <context:component-scan
+        base-package="org.liuhuo.spring" />
+
+
     <!-- freemarker config -->
     <bean id="freemarkerConfig" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
         <property name="templateLoaderPath" value="/WEB-INF/templates/"/>
@@ -36,15 +45,14 @@
         <property name="contentType" value="text/html;charset=UTF-8"></property>
     </bean>
 
+
     <jee:jndi-lookup id="dataSource"
                      jndi-name="jdbc/playground"
                      expected-type="javax.sql.DataSource" />
 
-    <mvc:annotation-driven/>
-    <context:annotation-config />
-    <context:component-scan
-        base-package="org.liuhuo.spring" />
 
     <!-- <mvc:resources mapping="/resources/**" location="/resources/" /> -->
     <!-- <mvc:default-servlet-handler /> -->
+
+
 </beans>

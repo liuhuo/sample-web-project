@@ -31,7 +31,7 @@ public class DummyUserController {
     @Autowired
     private DummyUserDao dummyUserDao;
 
-
+    
 
     @ModelAttribute("users")
     public List<DummyUser> setUsers() {

@@ -1,5 +1,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.liuhuo</groupId>
   <artifactId>data-cruncher</artifactId>
@@ -70,12 +71,20 @@
 	  <version>4.3.1</version>
       </dependency>
 
+
+      <!-- apache poi -->
+      <dependency>
+	<groupId>org.apache.poi</groupId>
+	<artifactId>poi</artifactId>
+	<version>3.9</version>
+      </dependency>
+
       <!-- Jdbc connector -->
-      <!-- <dependency> -->
-      <!--     <groupId>mysql</groupId> -->
-      <!--     <artifactId>mysql-connector-java</artifactId> -->
-      <!--     <version>5.1.27</version> -->
-      <!-- </dependency> -->
+      <dependency>
+          <groupId>mysql</groupId>
+          <artifactId>mysql-connector-java</artifactId>
+          <version>5.1.27</version>
+      </dependency>
 
       <!-- Loggin -->
       <dependency>
@@ -195,7 +204,7 @@
 	  <plugin>
 	      <groupId>org.apache.maven.plugins</groupId>
 	      <artifactId>maven-compiler-plugin</artifactId>
-	      <version>2.3.2</version>
+	      <version>3.1</version>
 	      <configuration>
 		  <source>${java-version}</source>
 		  <target>${java-version}</target>
@@ -233,12 +242,28 @@
 	      <groupId>org.apache.tomcat.maven</groupId>
 	      <artifactId>tomcat7-maven-plugin</artifactId>
 	      <version>2.2</version>
+              <dependencies>
+                <dependency>
+                  <groupId>mysql</groupId>
+                  <artifactId>mysql-connector-java</artifactId>
+                  <version>5.1.27</version>
+                </dependency>
+              </dependencies>
               <configuration>
                   <url>http://localhost:8080/manager/text</url>
                   <server>myserver1</server>
                   <path>/${project.build.finalName}</path>
               </configuration>
 	  </plugin>
+
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <version>1.2.1</version>
+            <configuration>
+              <mainClass>org.liuhuo.data.ExcelDataReader</mainClass>
+            </configuration>
+          </plugin>
       </plugins>
 
       <finalName>data-cruncher</finalName>

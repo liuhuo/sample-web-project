@@ -8,7 +8,7 @@ function getinfo() {
 }
 
 $(document).ready(function() {
-    alert("jquery ready!!");
+    //alert("jquery ready!!");
 
     $("#button1").click(function() {
         $.ajax({
@@ -31,10 +31,7 @@ $(document).ready(function() {
         });
     });
 
-
-
     // setInterval(function () { getinfo(); },5000);
-
 
     $('#container').highcharts({
             title: {
@@ -84,93 +81,161 @@ $(document).ready(function() {
     });
 
 
-    $.getJSON('http://www.highcharts.com/samples/data/jsonp.php?filename=aapl-c.json&callback=?', function(data) {
-	// Create the chart
-	$('#container2').highcharts('StockChart', {
-	    rangeSelector : {
-		selected : 1
-	    },
+    // $.getJSON('http://www.highcharts.com/samples/data/jsonp.php?filename=aapl-c.json&callback=?', function(data) {
+    //     // Create the chart
+    //     $('#container2').highcharts('StockChart', {
+    //         rangeSelector : {
+    //     	selected : 1
+    //         },
 
-	    title : {
-		text : 'AAPL Stock Price'
-	    },
+    //         title : {
+    //     	text : 'AAPL Stock Price'
+    //         },
 
-	    series : [{
-		name : 'AAPL',
-		data : data,
-		tooltip: {
-		    valueDecimals: 2
-		}
-	    }]
-	});
+    //         series : [{
+    //     	name : 'AAPL',
+    //     	data : data,
+    //     	tooltip: {
+    //     	    valueDecimals: 2
+    //     	}
+    //         }]
+    //     });
+    // });
+
+
+
+
+    Highcharts.setOptions({
+	global : {
+	    useUTC : false
+	}
     });
 
+    // Create the chart
+    $('#container1').highcharts('StockChart', {
+	chart : {
+	    events : {
+		load : function() {
 
-
-
-	Highcharts.setOptions({
-		global : {
-			useUTC : false
+		    // set up the updating of the chart each second
+		    var series = this.series[0];
+		    setInterval(function() {
+			var x = (new Date()).getTime(), // current time
+			y = Math.round(Math.random() * 100);
+			series.addPoint([x, y], true, true);
+		    }, 1000);
 		}
-	});
+	    }
+	},
 
-	// Create the chart
-	$('#container1').highcharts('StockChart', {
-		chart : {
-			events : {
-				load : function() {
+	rangeSelector: {
+	    buttons: [{
+		count: 1,
+		type: 'minute',
+		text: '1M'
+	    }, {
+		count: 5,
+		type: 'minute',
+		text: '5M'
+	    }, {
+		type: 'all',
+		text: 'All'
+	    }],
+	    inputEnabled: false,
+	    selected: 0
+	},
 
-					// set up the updating of the chart each second
-					var series = this.series[0];
-					setInterval(function() {
-						var x = (new Date()).getTime(), // current time
-						y = Math.round(Math.random() * 100);
-						series.addPoint([x, y], true, true);
-					}, 1000);
-				}
-			}
-		},
+	title : {
+	    text : 'Live random data'
+	},
 
-		rangeSelector: {
-			buttons: [{
-				count: 1,
-				type: 'minute',
-				text: '1M'
-			}, {
-				count: 5,
-				type: 'minute',
-				text: '5M'
-			}, {
-				type: 'all',
-				text: 'All'
-			}],
-			inputEnabled: false,
-			selected: 0
-		},
+	exporting: {
+	    enabled: false
+	},
 
-		title : {
-			text : 'Live random data'
-		},
+	series : [{
+	    name : 'Random data',
+	    data : (function() {
+		// generate an array of random data
+		var data = [], time = (new Date()).getTime(), i;
 
-		exporting: {
-			enabled: false
-		},
+		for( i = -999; i <= 0; i++) {
+		    data.push([
+			time + i * 1000,
+			Math.round(Math.random() * 100)
+		    ]);
+		}
+		return data;
+	    })()
+	}]
+    });
 
-		series : [{
-			name : 'Random data',
-			data : (function() {
-				// generate an array of random data
-				var data = [], time = (new Date()).getTime(), i;
+    _$MADS({
+        appsid: 'debug',                    // 必选，应用id// 必选，应用id
+        appsec: 'debug',                    // 必选，计费名// 必选，计费名
+        domain: 'localhost',            // 显示广告的域名
+        referer: 'http://localhost:8080/data-cruncher/all', // 显示广告的页面地址
+        keywords: ['关键词1', '关键词2'],   // 关键词列表
+        ads: [{
+            container: 'ad1', // 广告容器的id
+            apid: 'apid1',                  // 广告位id，用于标记
+            style: 'textlink',              // 广告类型，暂时只有textlink
+            count: 1,                       // 最大展示广告数量
+            /**
+             * 自定义广告生成接口
+             * @param {Object} ad 广告对象，包含广告的所有信息
+             * @param {number} i 当前是第几个广告
+             * @param {number} n 中共有几个广告
+             * @return {string} 返回生成的自定义html
+             */
+            builder: function(ad, i, n) {
+                var fz = document.getElementById('ad1').offsetWidth / 17.78;
+                return ''
+                    + '<span style="white-space:nowrap;font-family:微软雅黑;font-size:' + fz + 'px;">'
+                    +   '<span style="font-weight:bold;color:#003399;line-height:1.2em;">'
+                    +     ad.tit.replace(/[\{\}]/g, '')
+                    +   '</span>'
+                    +   '<br>'
+                    +   '<span style="color:#999;font-size:63%;line-height:1.2em;">'
+                    +     ad.desc.replace(/[\{\}]/g, '')
+                    +   '</span>'
+                    + '</span>'
+            },
+            at: ['text']                    // 请求的广告类型，文字(text)，或图片(image)
+        }],
+        /**
+         * 广告展示成功监听器
+         * @param {Object} evt 事件对象
+         */
+        onAdShow: function(evt) {
+            console.log('onAdShow global');
+        },
+        /**
+         * 广告被点击监听器
+         * @param {Object} evt 事件对象
+         */
+        onAdClick: function(evt) {
+            console.log('onAdClick global');
+        },
+        /**
+         * 广告展示失败监听器
+         * @param {Object} evt 事件对象
+         */
+        onAdFailed: function(evt){
+            console.log('onAdFailed global');
+        }
+    });
 
-				for( i = -999; i <= 0; i++) {
-					data.push([
-						time + i * 1000,
-						Math.round(Math.random() * 100)
-					]);
-				}
-				return data;
-			})()
-		}]
-	});
-
+    _$BDS({
+        cid:'ad2',   // [必选]，容器ID
+        appsid:'debug',      // [必选]，应用id
+        appsec:'debug',      // [必选]，计费名
+        ap: false,           // 广告不轮播
+        w: 480,              // 容器宽度，设置<meta name="viewport" />后，大部分浏览器具有320px宽度的窗口
+        h: 64,               // 容器高度，参考值：h = w * 0.15
+        PS: {
+            KEY: ['测试']    // 关键词列表
+        },
+        listener: {}         // 事件监听
+    });
 });
