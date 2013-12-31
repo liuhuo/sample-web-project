@@ -5,6 +5,7 @@
     xmlns:context="http://www.springframework.org/schema/context"
     xmlns:jee="http://www.springframework.org/schema/jee"
     xmlns:mvc="http://www.springframework.org/schema/mvc"
+    xmlns:websocket="http://www.springframework.org/schema/websocket"
     xsi:schemaLocation="http://www.springframework.org/schema/beans
                         http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
                         http://www.springframework.org/schema/context
@@ -12,7 +13,9 @@
                         http://www.springframework.org/schema/jee
                         http://www.springframework.org/schema/jee/spring-jee.xsd
                         http://www.springframework.org/schema/mvc
-                        http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+                        http://www.springframework.org/schema/mvc/spring-mvc.xsd
+                        http://www.springframework.org/schema/websocket
+                        http://www.springframework.org/schema/websocket/spring-websocket-4.0.xsd">
 
 
 
@@ -23,6 +26,23 @@
     <context:component-scan
         base-package="org.liuhuo.spring" />
 
+    <mvc:default-servlet-handler/>
+
+    <websocket:handlers>
+        <websocket:mapping path="/echo" handler="echoHandler"/>
+    </websocket:handlers>
+
+    <bean id="echoHandler" class="org.liuhuo.spring.websocket.EchoWebsocketHandler"/>
+
+    <bean class = "org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+      <property name="messageConverters">
+        <array>
+          <bean class = "org.springframework.http.converter.StringHttpMessageConverter">
+            <property name="supportedMediaTypes" value="application/json; charset=UTF-8" />
+          </bean>
+        </array>
+      </property>
+    </bean>
 
     <!-- freemarker config -->
     <bean id="freemarkerConfig" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">

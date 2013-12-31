@@ -42,6 +42,7 @@ public class DummyUserServlet extends HttpServlet {
 		String user = rs.getString("name");
 		String role = rs.getString("role");
 		DummyUser du = new DummyUser(id,user,role);
+                System.out.println(du);
 		result.add(du);
 	    }
 	    request.setAttribute("result",result);

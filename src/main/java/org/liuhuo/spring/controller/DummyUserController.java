@@ -32,7 +32,6 @@ public class DummyUserController {
     private DummyUserDao dummyUserDao;
 
     
-
     @ModelAttribute("users")
     public List<DummyUser> setUsers() {
 	return dummyUserDao.selectAll();
