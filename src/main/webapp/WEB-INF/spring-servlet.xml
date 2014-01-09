@@ -18,6 +18,9 @@
                         http://www.springframework.org/schema/websocket/spring-websocket-4.0.xsd">
 
 
+    <jee:jndi-lookup id="dataSource"
+                     jndi-name="jdbc/playground"
+                     expected-type="javax.sql.DataSource" />
 
     <mvc:annotation-driven/>
 
@@ -30,9 +33,11 @@
 
     <websocket:handlers>
         <websocket:mapping path="/echo" handler="echoHandler"/>
+        <websocket:mapping path="/track" handler="trackHandler"/>
     </websocket:handlers>
 
     <bean id="echoHandler" class="org.liuhuo.spring.websocket.EchoWebsocketHandler"/>
+    <bean id="trackHandler" class="org.liuhuo.spring.websocket.TrackWebsocketHandler"/>
 
     <bean class = "org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
       <property name="messageConverters">
@@ -66,10 +71,15 @@
     </bean>
 
 
-    <jee:jndi-lookup id="dataSource"
-                     jndi-name="jdbc/playground"
-                     expected-type="javax.sql.DataSource" />
 
+<!-- <jee:jndi-lookup id="dataSourcejndi" jndi-name="jdbc/playground" -->
+<!--         lookup-on-startup="false" proxy-interface="javax.sql.DataSource" -->
+<!--         cache="true" resource-ref="true" /> -->
+
+<!-- <bean id="dataSource" -->
+<!--       class="org.springframework.jndi.JndiObjectFactoryBean" lazy-init="true"> -->
+<!--   <property name="dataSource" ref="dataSourcejndi" /> -->
+<!-- </bean> -->
 
     <!-- <mvc:resources mapping="/resources/**" location="/resources/" /> -->
     <!-- <mvc:default-servlet-handler /> -->

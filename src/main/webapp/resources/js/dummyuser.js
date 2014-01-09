@@ -32,15 +32,23 @@ function show_chart(a1, a2) {
     isp = ""
     elem = ""
     for (var i = 0; i < a2[0].length; i++) {
+        var dateParts = a2[0][i].date.split("-")
+        var utcDate = Date.UTC(dateParts[0],dateParts[1],dateParts[2])
         if (a2[0][i].isp != isp) {
             if (i != 0) ydata.push(elem)
             isp = a2[0][i].isp
-            elem = {'name':isp,data:[a2[0][i].clicks]}
+            // elem = {'name':isp,data:[a2[0][i].clicks]}
+            
+            elem= {'name':isp, data:[ [utcDate, a2[0][i].clicks]]} 
         }
-        else elem.data.push(a2[0][i].clicks)
+        // else elem.data.push(a2[0][i].clicks)
+        else elem.data.push([utcDate, a2[0][i].clicks])
     }
     ydata.push(elem);
     console.log(ydata);
+    
+
+
     $('#container').highcharts({
         title: {
             text: 'monthly clicks stats',
@@ -51,7 +59,12 @@ function show_chart(a1, a2) {
             x: -20
         },
         xAxis: {
-            categories: xdata
+            type: 'datetime',
+            dateTimeLabelFormats: { // don't display the dummy year
+                month: '%e. %b',
+                year: '%b'
+            }
+            //categories: xdata
         },
         yAxis: {
             title: {
@@ -74,6 +87,13 @@ function show_chart(a1, a2) {
 }
 
 $(document).ready(function() {
+    var query = btoa(encodeURIComponent('event_count=3&event_source_ip=1.2.3.4&datetime=2013-12-31 19:23:59&service_name=重定向麒&event_type=CC'))
+    alert(query)
+    
+    $.ajax("saveremotedata",{
+        data:query,
+        type:"GET"})
+
     var Service = Backbone.Model.extend({
         urlRoot: 'service',
         defaults: {
@@ -175,39 +195,84 @@ $(document).ready(function() {
 
     new App();
     
-    $.when($.ajax({
-        url: "isps",
-        success: function(data) {
-            console.log(data);
-            var select = $("#allisp");
-            $.each(data, function(idx, val) {
-                select.append($("<option></option>").val(val).html(val));
-            });
-        }
-    })).then(function() {
-        var isp = $("#allisp").val()
-        
+    // $.when($.ajax({
+    //     url: "isps",
+    //     success: function(data) {
+    //         console.log(data);
+    //         var select = $("#allisp");
+    //         $.each(data, function(idx, val) {
+    //             select.append($("<option></option>").val(val).html(val));
+    //         });
+    //     }
+    // })).then(function() {
+    //     var isp = $("#allisp").val()
+    // });
 
+    var checkboxes = function(data) {
+        var checkboxdiv = $("#massive")
+        checkboxdiv.empty();
+        $.each(data, function(idx, val) {
+            checkboxdiv.append($('<input type="checkbox" name="services[]" value=' + val+ '>'+val +'</br>') )
+        });
+    }
+
+    $.ajax("isps").then(function(data,other1,other2) {
+        var select = $("#listisp");
+        $.each(data, function(idx, val) {
+            select.append($("<option></option>").val(val).html(val));
+        });
+        
+        select.change(function() {
+            $.ajax({
+                url: "ispservices",
+                data: {'isp': select.val()},
+                success: checkboxes
+            })
+        });
+
+
+        return $.ajax({
+            url: "ispservices",
+            data:  {'isp': select.val()}});
+    }).then(function(data, other1,other2) {
+        checkboxes(data);
+        $("#massive").on("click","input",function() {
+            var checked = $("input:checked")
+            var data = ""
+            $.each(checked,function(idx, val) {
+                data += $(val).val()
+                data += "#"
+            });
+            data = data.substring(0,data.length-1);
+
+            if (data == "") return
+            var defer2 = $.ajax({
+                url: "selected_service",
+                data: {'services':data}
+            });
+            var defer1 = $.ajax("dates");
+            $.when(defer1,defer2).done(show_chart)
+        })
     });
 
-    $("#allisp").change(function() {
-        $.ajax({
-            url: "ispservices",
-            data: {'isp':$(this).val()},
-            contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-            success: function(data) {
-                console.log(data)
-                $("#servicenames").empty()
-                $.each(data, function(idx, val) {
-                    $("#servicenames").append($('<li class="ui-widget-content"></li>').html(val));
-                });
-                $("#servicenames").selectable({
-                    selected: sendData,
-                    unselected: sendData
-                });
-            }
-        })
-    })
+    // $("#allisp").change(function() {
+    //     $.ajax({
+    //         url: "ispservices",
+    //         data: {'isp':$(this).val()},
+    //         contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+    //         success: function(data) {
+    //             console.log(data)
+    //             $("#servicenames").empty()
+    //             $.each(data, function(idx, val) {
+    //                 $("#servicenames").append($('<li class="ui-widget-content"></li>').html(val));
+    //             });
+    //             $("#servicenames").selectable({
+    //                 selected: sendData,
+    //                 unselected: sendData
+    //             });
+    //         }
+    //     })
+    // })
 
     $.ajax({
         url: "names",
