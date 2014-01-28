@@ -61,7 +61,7 @@ public class PVRecordController {
         List<java.sql.Date> dates = pvrecordDao.rangeDate(from,to);
         return dates;
     }
-    
+
     @RequestMapping(value = "/rangeclick", method = RequestMethod.GET)
     public @ResponseBody List<ISPDailyRecord> rangeclick(@RequestParam String from, @RequestParam String to)  {
         List<ISPDailyRecord> records = pvrecordDao.ispRangePush(from,to);
@@ -104,24 +104,24 @@ public class PVRecordController {
     @RequestMapping(value = "/ispservices",
                     produces="application/json;charset=UTF-8")
         public @ResponseBody List<String> serviceNames(@RequestParam String isp) throws Exception{
-        byte tmpByteArr[];
-        tmpByteArr = isp.getBytes("ISO-8859-1");
-        isp = new String(tmpByteArr, "UTF-8");
-        logger.info("got parameter isp:" +isp);
-        System.out.println(pvrecordDao.serviceNames(isp));
+        // byte tmpByteArr[];
+        // tmpByteArr = isp.getBytes("ISO-8859-1");
+        // isp = new String(tmpByteArr, "UTF-8");
+        // logger.info("got parameter isp:" +isp);
+        // System.out.println(pvrecordDao.serviceNames(isp));
         return pvrecordDao.serviceNames(isp);
     }
 
     @RequestMapping(value = "selected_service",
                     produces="application/json;charset=UTF-8")
         public @ResponseBody List<ISPDailyRecord> selectedServiceNames(@RequestParam("services") String services) throws Exception{
-        byte tmpByteArr[];
-        tmpByteArr = services.getBytes("ISO-8859-1");
-        services = new String(tmpByteArr, "UTF-8");
-        logger.info("got parameter services:" + services);
+        // byte tmpByteArr[];
+        // tmpByteArr = services.getBytes("ISO-8859-1");
+        // services = new String(tmpByteArr, "UTF-8");
+        // logger.info("got parameter services:" + services);
         String[] params = services.split("#");
         List<ISPDailyRecord> result = pvrecordDao.selectedServicePush(params);
-        System.out.println(result);
+        // System.out.println(result);
         return result;
     }
 
@@ -138,7 +138,7 @@ public class PVRecordController {
         return "{\"title\":\"custom service 1\",\"price\":110}";
     }
 
-    @RequestMapping(value = "/dummysave") 
+    @RequestMapping(value = "/dummysave")
     public String dummySave(@ModelAttribute Tmp tmp) {
         System.out.println(tmp);
         return "hello";
@@ -150,7 +150,7 @@ public class PVRecordController {
         System.out.println("from model " + model.get("pv"));
         return "hello";
     }
-    
+
     @RequestMapping(value = "/remote", method = RequestMethod.POST)
     public String remoteData(HttpServletRequest request) {
         System.out.println("behold, a log is comming");
@@ -173,7 +173,7 @@ public class PVRecordController {
         return "hello";
     }
 
-    
+
 }
 
 class TmpRecord {

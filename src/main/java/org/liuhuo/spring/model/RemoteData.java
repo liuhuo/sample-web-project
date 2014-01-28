@@ -6,6 +6,7 @@ import java.sql.Timestamp;
 public class RemoteData {
     private int id;
     private String ip;
+    private String ispName;
     private String serviceName;
     private String serviceCategory;
     private String eventType;
@@ -29,6 +30,14 @@ public class RemoteData {
 
     public void setIp(String ip) {
         this.ip = ip;
+    }
+
+    public String getIspName() {
+        return ispName;
+    }
+
+    public void setIspName(String name)  {
+        this.ispName = name;
     }
 
     public String getServiceName() {

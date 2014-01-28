@@ -32,22 +32,21 @@ function show_chart(a1, a2) {
     isp = ""
     elem = ""
     for (var i = 0; i < a2[0].length; i++) {
-        var dateParts = a2[0][i].date.split("-")
-        var utcDate = Date.UTC(dateParts[0],dateParts[1],dateParts[2])
+        // var dateParts = a2[0][i].date.split("-")
+        // var utcDate = Date.UTC(dateParts[0],dateParts[1],dateParts[2])
+        var utcDate = a2[0][i].date
         if (a2[0][i].isp != isp) {
             if (i != 0) ydata.push(elem)
             isp = a2[0][i].isp
             // elem = {'name':isp,data:[a2[0][i].clicks]}
-            
-            elem= {'name':isp, data:[ [utcDate, a2[0][i].clicks]]} 
+
+            elem= {'name':isp, data:[ [utcDate, a2[0][i].clicks]]}
         }
         // else elem.data.push(a2[0][i].clicks)
         else elem.data.push([utcDate, a2[0][i].clicks])
     }
     ydata.push(elem);
     console.log(ydata);
-    
-
 
     $('#container').highcharts({
         title: {
@@ -87,12 +86,12 @@ function show_chart(a1, a2) {
 }
 
 $(document).ready(function() {
-    var query = btoa(encodeURIComponent('event_count=3&event_source_ip=1.2.3.4&datetime=2013-12-31 19:23:59&service_name=重定向麒&event_type=CC'))
-    alert(query)
-    
-    $.ajax("saveremotedata",{
-        data:query,
-        type:"GET"})
+    // var query = btoa(encodeURIComponent('event_count=3&event_source_ip=1.2.3.4&datetime=2013-12-31 19:23:59&service_name=重定向麒&event_type=CC'))
+    // alert(query)
+
+    // $.ajax("saveremotedata",{
+    //     data:query,
+    //     type:"GET"})
 
     var Service = Backbone.Model.extend({
         urlRoot: 'service',
@@ -129,7 +128,7 @@ $(document).ready(function() {
     // var services = new ServiceList();
     // services.url="services";
     // services.fetch({reset: true});
-    
+
     // var services = new ServiceList();
     // $.ajax({
     //     url: "services",
@@ -173,7 +172,7 @@ $(document).ready(function() {
     var App = Backbone.View.extend({
         el: $("#form2"),
         initialize: function() {
-            
+
             this.total = $('#total span');
             this.list = $('#services');
             console.log(services)
@@ -194,7 +193,7 @@ $(document).ready(function() {
     });
 
     new App();
-    
+
     // $.when($.ajax({
     //     url: "isps",
     //     success: function(data) {
@@ -221,7 +220,7 @@ $(document).ready(function() {
         $.each(data, function(idx, val) {
             select.append($("<option></option>").val(val).html(val));
         });
-        
+
         select.change(function() {
             $.ajax({
                 url: "ispservices",
@@ -285,7 +284,7 @@ $(document).ready(function() {
     })
     // $("#ac").typeahead({
     //     name: 'accounts',
-    //     local: 
+    //     local:
     // });
 
     // $("#ac").focus(function() {

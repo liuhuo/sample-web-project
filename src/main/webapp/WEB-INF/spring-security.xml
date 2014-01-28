@@ -8,6 +8,7 @@
 
 	<http auto-config="true">
 		<intercept-url pattern="/all" access="ROLE_USER" />
+		<intercept-url pattern="/remote/**" access="ROLE_USER" />
 	</http>
 
 	<authentication-manager>

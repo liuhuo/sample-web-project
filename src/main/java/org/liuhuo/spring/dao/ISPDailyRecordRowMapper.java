@@ -9,8 +9,7 @@ import org.liuhuo.spring.model.ISPDailyRecord;
 
 public class ISPDailyRecordRowMapper implements RowMapper<ISPDailyRecord> {
     public ISPDailyRecord mapRow(ResultSet rs, int row) throws SQLException {
-        ISPDailyRecord record = new ISPDailyRecord(rs.getString("isp"), rs.getDate("record_date"),rs.getInt("push"));
+        ISPDailyRecord record = new ISPDailyRecord(rs.getString("isp"), rs.getTimestamp("record_date"),rs.getInt("push"));
         return record;
     }
 }
-

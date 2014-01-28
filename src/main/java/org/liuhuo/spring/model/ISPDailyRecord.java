@@ -1,16 +1,17 @@
 package org.liuhuo.spring.model;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.io.Serializable;
 
 
 public class ISPDailyRecord implements Serializable {
     String isp;
-    Date date;
+    Timestamp date;
     int clicks;
 
-    public ISPDailyRecord(String isp, Date date, int clicks) {
+    public ISPDailyRecord(String isp, Timestamp date, int clicks) {
         this.isp = isp;
         this.date = date;
         this.clicks = clicks;
@@ -20,7 +21,7 @@ public class ISPDailyRecord implements Serializable {
         return this.isp;
     }
 
-    public Date getDate() {
+    public Timestamp getDate() {
         return this.date;
     }
 
@@ -38,11 +39,10 @@ public class ISPDailyRecord implements Serializable {
 
     public void setDate(String date) throws Exception {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        this.date = new Date(formatter.parse(date).getTime());
-        
+        this.date = new Timestamp(formatter.parse(date).getTime());
     }
 
-    public void setDate(Date date) {
+    public void setDate(Timestamp date) {
         this.date = date;
     }
 

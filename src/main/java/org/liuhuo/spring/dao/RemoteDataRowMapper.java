@@ -12,9 +12,11 @@ public class RemoteDataRowMapper implements RowMapper<RemoteData> {
         RemoteData data = new RemoteData();
         data.setId(rs.getInt("id"));
         data.setIp(rs.getString("ip"));
+        data.setIspName(rs.getString("isp_name"));
         data.setServiceName(rs.getString("service_name"));
         data.setServiceCategory(rs.getString("service_category"));
-        data.setEventType(rs.getString("event_type"));
+        String type = rs.getString("event_type");
+        data.setEventType(type == null ? null: (type.equals("1")) ? "PV":"UV");
         data.setEventTime(rs.getTimestamp("event_time"));
         data.setEventCount(rs.getInt("event_count"));
         data.setRecordTime(rs.getTimestamp("record_time"));
@@ -23,4 +25,3 @@ public class RemoteDataRowMapper implements RowMapper<RemoteData> {
         return data;
     }
 }
-
